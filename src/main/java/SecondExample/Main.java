@@ -25,6 +25,7 @@ import java.util.List;
 /*
 *
 * Example2 (using the SimplePOJOTestDriver)
+* Inspired by: https://github.com/LearnLib/learnlib/blob/develop/examples/src/main/java/de/learnlib/examples/Example2.java
 *
 * */
 public class Main {
