@@ -14,7 +14,8 @@ public class Oracle implements MembershipOracle.DFAMembershipOracle<String> {
         for(Query<String, Boolean> query : queries)
         {
             testDriver.reset();
-            boolean out = false;
+            //empty string ok
+            boolean out = true;
             for (String input : query.getInput()) {
                 out = testDriver.executeSymbol(input);
             }

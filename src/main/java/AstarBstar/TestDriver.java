@@ -13,6 +13,7 @@ public class TestDriver {
     private static final String A = "a";
     private static final String B = "b";
     private boolean firstB = false;
+    private boolean aInSecond = false;
 
     // input alphabet used by learning algorithm
     public static final Alphabet<String> SIGMA = new GrowingMapAlphabet<>();
@@ -35,12 +36,15 @@ public class TestDriver {
         }
         else
         {
-            return s.equals(B);
+            if(s.equals(A))
+                aInSecond=true;
+            return !aInSecond && s.equals(B);
         }
     }
 
     public void reset()
     {
-        firstB=false;
+        firstB=aInSecond=false;
+
     }
 }
