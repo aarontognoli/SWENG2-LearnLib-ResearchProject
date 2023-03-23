@@ -10,13 +10,13 @@ import java.util.List;
 public class TestDriver {
 
     // input symbols
-    private static final String A = "a";
-    private static final String B = "b";
+    private static final Character A = 'a';
+    private static final Character B = 'b';
     private boolean firstB = false;
     private boolean aInSecond = false;
 
     // input alphabet used by learning algorithm
-    public static final Alphabet<String> SIGMA = new GrowingMapAlphabet<>();
+    public static final Alphabet<Character> SIGMA = new GrowingMapAlphabet<>();
 
     static {
         SIGMA.add(A);
@@ -24,7 +24,7 @@ public class TestDriver {
     }
 
     //oracle behavior
-    public boolean executeSymbol(String s)
+    public boolean executeSymbol(Character s)
     {
         if(!firstB)
         {

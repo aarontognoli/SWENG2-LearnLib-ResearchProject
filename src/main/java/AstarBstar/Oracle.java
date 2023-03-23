@@ -6,17 +6,17 @@ import net.automatalib.words.WordBuilder;
 
 import java.util.Collection;
 
-public class Oracle implements MembershipOracle.DFAMembershipOracle<String> {
+public class Oracle implements MembershipOracle.DFAMembershipOracle<Character> {
 
     TestDriver testDriver= new TestDriver();
     @Override
-    public void processQueries(Collection<? extends Query<String, Boolean>> queries) {
-        for(Query<String, Boolean> query : queries)
+    public void processQueries(Collection<? extends Query<Character, Boolean>> queries) {
+        for(Query<Character, Boolean> query : queries)
         {
             testDriver.reset();
             //empty string ok
             boolean out = true;
-            for (String input : query.getInput()) {
+            for (Character input : query.getInput()) {
                 out = testDriver.executeSymbol(input);
             }
 

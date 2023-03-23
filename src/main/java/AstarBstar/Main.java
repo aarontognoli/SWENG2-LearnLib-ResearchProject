@@ -19,18 +19,18 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         // create oracle
-        MembershipOracle.DFAMembershipOracle<String> testOracle = new Oracle();
+        MembershipOracle.DFAMembershipOracle<Character> testOracle = new Oracle();
         //Equivalence Oracle
-        EquivalenceOracle.DFAEquivalenceOracle<String> eqtest = new DFAWMethodEQOracle<>( testOracle,4);
+        EquivalenceOracle.DFAEquivalenceOracle<Character> eqtest = new DFAWMethodEQOracle<>( testOracle,4);
 
 
-        ClassicLStarDFA<String> lstar = new ClassicLStarDFABuilder<String>()
+        ClassicLStarDFA<Character> lstar = new ClassicLStarDFABuilder<Character>()
                 .withAlphabet(TestDriver.SIGMA)
                 .withOracle(testOracle)
                 .create();
 
 
-        Experiment.DFAExperiment<String> experiment = new Experiment.DFAExperiment<>( lstar,eqtest,TestDriver.SIGMA);
+        Experiment.DFAExperiment<Character> experiment = new Experiment.DFAExperiment<>( lstar,eqtest,TestDriver.SIGMA);
 
 
 
@@ -44,7 +44,7 @@ public class Main {
         experiment.run();
 
         // get learned model
-        DFA<?, String> result = experiment.getFinalHypothesis();
+        DFA<?, Character> result = experiment.getFinalHypothesis();
 
         // report results
         System.out.println("-------------------------------------------------------");
@@ -70,5 +70,6 @@ public class Main {
         Visualization.visualize(result, TestDriver.SIGMA);
 
         System.out.println("-------------------------------------------------------");
+
     }
 }
