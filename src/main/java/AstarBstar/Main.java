@@ -58,22 +58,14 @@ public class Main {
 
         // get learned model
         DFA<?, Character> result = experiment.getFinalHypothesis();
-        //try system
-        System.out.println(result.accepts(toCharacterArray("aaa")));
-        System.out.println(result.accepts(toCharacterArray("aabb")));
-        System.out.println(result.accepts(toCharacterArray("bbb")));
-        System.out.println(result.accepts(toCharacterArray("")));
-        System.out.println(result.accepts(toCharacterArray("bbbaa")));
-        //TODO find way to save result
-        /*
-        CompactDFA<Character> toJson = (CompactDFA<Character>) result;
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        //save result to Json
+        //save result to Json, result is a compactDFA
         try (FileWriter writer = new FileWriter("./myDFA.json")) {
-            gson.toJson(toJson, writer);
+            gson.toJson(result, writer);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
         // report results
         System.out.println("-------------------------------------------------------");
