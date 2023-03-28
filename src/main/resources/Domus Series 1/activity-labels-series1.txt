@@ -1,0 +1,6 @@
+1 Wake up
+2 Use toilet
+3 Preparing breakfast
+4 Having breakfast
+5 Washing dishes 
+6 Other activities
