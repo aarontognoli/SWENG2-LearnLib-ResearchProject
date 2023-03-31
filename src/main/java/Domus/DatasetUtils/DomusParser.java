@@ -22,7 +22,7 @@ public class DomusParser {
         while ((st = br.readLine()) != null) {
             attributes = Arrays.stream(st.split("\"")).filter(s -> !s.isBlank()).toList();
 
-            DomusRecord dr = new DomusRecord(LocalTime.parse(attributes.get(0), DateTimeFormatter.ofPattern("H:mm:s")),
+            DomusRecord dr = new DomusRecord(LocalTime.parse(attributes.get(0), DateTimeFormatter.ofPattern("H:m:s")),
                     attributes.get(1),
                     attributes.get(2),
                     attributes.get(3),

@@ -15,4 +15,8 @@ public class Dataset {
             throw new Exception("Empty");
         users.get(users.size()-1).add(day);
     }
+
+    public List<List<DatasetDay>> getUsers() {
+        return new ArrayList<>(users);
+    }
 }
