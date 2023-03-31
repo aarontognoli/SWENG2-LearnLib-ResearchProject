@@ -27,11 +27,37 @@ public class DatasetDay {
 
     }
 
-    List<DomusRecord> preTea;
-    List<DomusRecord> duringTea;
-    List<DomusRecord> postTea;
+    List<DomusRecord> preTea= new ArrayList<>();
+    List<DomusRecord> duringTea= new ArrayList<>();
+    List<DomusRecord> postTea= new ArrayList<>();
     private void divideRecords(LocalTime teaStart,LocalTime teaEnd)
     {
-        //todo
+        for(DomusRecord r : records)
+        {
+            if(r.time().isBefore(teaStart))
+            {
+                preTea.add(r);
+            }
+            else if(r.time().isBefore(teaEnd))
+            {
+                duringTea.add(r);
+            }
+            else
+            {
+                postTea.add(r);
+            }
+        }
+    }
+
+    public List<DomusRecord> getPreTea() {
+        return new ArrayList<>(preTea);
+    }
+
+    public List<DomusRecord> getDuringTea() {
+        return new ArrayList<>(duringTea);
+    }
+
+    public List<DomusRecord> getPostTea() {
+        return new ArrayList<>(postTea);
     }
 }
