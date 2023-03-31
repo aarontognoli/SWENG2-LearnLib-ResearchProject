@@ -1,5 +1,8 @@
 package Domus.DatasetUtils;
 
-public record DomusRecord(Time time, String sensorID, String sensorName, String sensorLocation, SensorState state) {
+import java.time.LocalTime;
+
+//
+public record DomusRecord(LocalTime time, String sensorID, String sensorName, String sensorLocation, SensorState state) {
 
 }
