@@ -38,7 +38,7 @@ public class DatasetDay {
             {
                 preTea.add(r);
             }
-            else if(r.time().isBefore(teaEnd))
+            else if(r.time().isBefore(teaEnd)|| r.time().equals(teaEnd))
             {
                 duringTea.add(r);
             }
