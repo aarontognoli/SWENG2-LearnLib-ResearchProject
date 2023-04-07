@@ -4,14 +4,13 @@ import Domus.DatasetUtils.DomusRecord;
 import de.learnlib.api.oracle.MembershipOracle;
 import de.learnlib.api.query.Query;
 
-import java.io.IOException;
 import java.util.Collection;
 
 public class DomusOracle implements MembershipOracle.DFAMembershipOracle<DomusRecord> {
     DomusTestDriver testDriver;
 
-    public DomusOracle(String pathname) throws IOException {
-        this.testDriver = new DomusTestDriver(pathname);
+    public DomusOracle(DomusTestDriver testDriver) {
+        this.testDriver = testDriver;
     }
 
     @Override

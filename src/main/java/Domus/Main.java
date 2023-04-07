@@ -1,5 +1,7 @@
 package Domus;
 
+import Domus.DatasetUtils.CustomGson;
+import Domus.DatasetUtils.DataserClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,17 +17,20 @@ import net.automatalib.automata.fsa.DFA;
 import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.visualization.Visualization;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        // membership oracle
-        // in this case test driver is associated only with series 2, user 1, day 1
-        MembershipOracle.DFAMembershipOracle<DomusRecord> mOracle = new DomusOracle("src/main/resources/Domus Series 2/User 1/Day 1.vna");
-        //Equivalence Oracle
-        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFAWMethodEQOracle<>(mOracle, 4);
+        // setting up dataset
+        Dataset datasetSeries1 = readJson("./DatasetSeries1.json");
+        Dataset datasetSeries2 = readJson("./DatasetSeries2.json");
 
+        // test driver
+        DomusTestDriver testDriver = new DomusTestDriver(6, 5, datasetSeries2, datasetSeries1);
+        // membership oracle
+        MembershipOracle.DFAMembershipOracle<DomusRecord> mOracle = new DomusOracle(testDriver);
+        // equivalence oracle
+        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFAWMethodEQOracle<>(mOracle, 100);
 
         ClassicLStarDFA<DomusRecord> lStarDFA = new ClassicLStarDFABuilder<DomusRecord>()
                 .withAlphabet(DomusTestDriver.SIGMA)
@@ -78,5 +83,13 @@ public class Main {
         Visualization.visualize(result, DomusTestDriver.SIGMA);
 
         System.out.println("-------------------------------------------------------");
+    }
+
+    private static Dataset readJson(String path) throws FileNotFoundException {
+        Gson g = CustomGson.getCustomGson();
+        Reader reader = new FileReader(path);
+        Dataset d = g.fromJson(reader,Dataset.class);
+        System.out.println("Read " + path);
+        return d;
     }
 }
