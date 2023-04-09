@@ -35,13 +35,11 @@ public class DomusTestDriver implements SUL<DomusRecord, Boolean> {
     }
 
     @Override
-    public void pre() {
-        currentSteps.forEach(i -> i = 0);
-    }
+    public void pre() {}
 
     @Override
     public void post() {
-        currentSteps.forEach(i -> i = 0);
+        Collections.fill(currentSteps, 0);
     }
 
     @Override

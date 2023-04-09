@@ -7,10 +7,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
-import de.learnlib.api.oracle.EquivalenceOracle;
 import de.learnlib.api.oracle.MembershipOracle;
 import de.learnlib.datastructure.observationtable.writer.ObservationTableASCIIWriter;
-import de.learnlib.oracle.equivalence.DFAWMethodEQOracle;
+import de.learnlib.oracle.equivalence.SampleSetEQOracle;
 import de.learnlib.util.Experiment;
 import de.learnlib.util.statistics.SimpleProfiler;
 import net.automatalib.automata.fsa.DFA;
@@ -24,20 +23,33 @@ public class Main {
         // setting up dataset
         Dataset datasetSeries1 = readJson("./DatasetSeries1.json");
         Dataset datasetSeries2 = readJson("./DatasetSeries2.json");
+        int nUsers = 6;
+        int nDays = 5;
 
         // test driver
-        DomusTestDriver testDriver = new DomusTestDriver(6, 5, datasetSeries2, datasetSeries1);
-        // membership oracle
-        MembershipOracle.DFAMembershipOracle<DomusRecord> mOracle = new DomusOracle(testDriver);
-        // equivalence oracle
-        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFAWMethodEQOracle<>(mOracle, 100);
+        DomusTestDriver testDriver = new DomusTestDriver(nUsers, nDays, datasetSeries2, datasetSeries1);
 
+        // membership oracle
+        MembershipOracle<DomusRecord, Boolean> mOracle = new DomusOracle(testDriver);
+
+        // equivalence oracle
+        // EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFAWMethodEQOracle<>(mOracle, 100);
+        SampleSetEQOracle<DomusRecord, Boolean> eqOracle = new SampleSetEQOracle<>(false);
+        for (int u = 0; u < nUsers; u++) {
+            for (int d = 0; d < nDays; d++) {
+                eqOracle.addAll(mOracle, new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPreTea()));
+                eqOracle.addAll(mOracle, new DomusWord(datasetSeries2.getUsers().get(u).get(d).getDuringTea()));
+                eqOracle.addAll(mOracle, new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPostTea()));
+            }
+        }
+
+        // l star algorithm
         ClassicLStarDFA<DomusRecord> lStarDFA = new ClassicLStarDFABuilder<DomusRecord>()
                 .withAlphabet(DomusTestDriver.SIGMA)
                 .withOracle(mOracle)
                 .create();
 
-
+        // experiment
         Experiment.DFAExperiment<DomusRecord> experiment = new Experiment.DFAExperiment<>(lStarDFA, eqOracle, DomusTestDriver.SIGMA);
 
         // turn on time profiling
@@ -53,11 +65,11 @@ public class Main {
         DFA<?, DomusRecord> result = experiment.getFinalHypothesis();
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        //save result to Json, result is a compactDFA
+        // save result to Json, result is a compactDFA
         try (FileWriter writer = new FileWriter("./DomusDFA.json")) {
             gson.toJson(result, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
 
         // report results
