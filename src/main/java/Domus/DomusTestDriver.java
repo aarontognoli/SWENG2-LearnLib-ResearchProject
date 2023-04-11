@@ -35,23 +35,23 @@ public class DomusTestDriver implements SUL<DomusRecord, Boolean> {
     }
 
     @Override
-    public void pre() {}
+    public void pre() {
+        Collections.fill(currentSteps, 0);
+    }
 
     @Override
     public void post() {
-        Collections.fill(currentSteps, 0);
+
     }
 
     @Override
     public Boolean step(DomusRecord in) {
         for (int indexSequence = 0; indexSequence < allValidTeaSequences.size(); indexSequence++) {
             int indexStep = currentSteps.get(indexSequence);
+            if (indexStep == allValidTeaSequences.get(indexSequence).size()-1)
+                return true;
             if (in.equals(allValidTeaSequences.get(indexSequence).get(indexStep))) {
-                if (indexStep == allValidTeaSequences.get(indexSequence).size() - 1)
-                    return true;
                 currentSteps.set(indexSequence, indexStep + 1);
-            } else {
-                currentSteps.set(indexSequence, 0);
             }
         }
         return false;

@@ -7,7 +7,9 @@ import com.google.gson.Gson;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
 import de.learnlib.api.oracle.MembershipOracle;
+import de.learnlib.datastructure.observationtable.OTUtils;
 import de.learnlib.datastructure.observationtable.writer.ObservationTableASCIIWriter;
+import de.learnlib.datastructure.observationtable.writer.ObservationTableHTMLWriter;
 import de.learnlib.oracle.equivalence.SampleSetEQOracle;
 import de.learnlib.util.Experiment;
 import de.learnlib.util.statistics.SimpleProfiler;
@@ -22,8 +24,8 @@ public class Main {
         // setting up dataset
         Dataset datasetSeries1 = readJson("./DatasetSeries1.json");
         Dataset datasetSeries2 = readJson("./DatasetSeries2.json");
-        int nUsers = 6;
-        int nDays = 5;
+        int nUsers = 1;
+        int nDays = 2;
 
         // test driver
         DomusTestDriver testDriver = new DomusTestDriver(nUsers, nDays, datasetSeries2, datasetSeries1);
@@ -33,12 +35,17 @@ public class Main {
 
         // equivalence oracle
         // EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFAWMethodEQOracle<>(mOracle, 100);
-        SampleSetEQOracle<DomusRecord, Boolean> eqOracle = new SampleSetEQOracle<>(false);
+        SampleSetEQOracle<DomusRecord, Boolean> eqOracle = new SampleSetEQOracle<>(true);
         for (int u = 0; u < nUsers; u++) {
             for (int d = 0; d < nDays; d++) {
-                eqOracle.addAll(mOracle, new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPreTea()));
-                eqOracle.addAll(mOracle, new DomusWord(datasetSeries2.getUsers().get(u).get(d).getDuringTea()));
-                eqOracle.addAll(mOracle, new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPostTea()));
+                //known output
+                eqOracle.add( new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPreTea()),false);
+                eqOracle.add( new DomusWord(datasetSeries2.getUsers().get(u).get(d).getDuringTea()),true);
+                eqOracle.add(new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPostTea()),false);
+                //unknown output
+                //eqOracle.addAll(mOracle,new DomusWord(datasetSeries2.getUsers().get(u).get(d).getRecords()));
+                //eqOracle.addAll(mOracle,new DomusWord(datasetSeries1.getUsers().get(u).get(d).getRecords()));
+
             }
         }
 
@@ -65,7 +72,7 @@ public class Main {
 
         Gson gson = CustomGson.getCustomGson();
         // save result to Json, result is a compactDFA
-        try (FileWriter writer = new FileWriter("./DomusDFA.json")) {
+        try (FileWriter writer = new FileWriter("./DomusDFA"+nUsers+"u-"+nDays+"d.json")) {
             gson.toJson(result, writer);
         } catch (IOException e) {
            e.printStackTrace();
@@ -80,7 +87,7 @@ public class Main {
         // learning statistics
         System.out.println(experiment.getRounds().getSummary());
         System.out.println();
-        new ObservationTableASCIIWriter<>().write(lStarDFA.getObservationTable(), System.out);
+        //new ObservationTableASCIIWriter<>().write(lStarDFA.getObservationTable(), System.out);
 
         // model statistics
         System.out.println("States: " + result.size());
@@ -89,7 +96,8 @@ public class Main {
         // show model
         System.out.println();
         System.out.println("Model: ");
-        GraphDOT.write(result, DomusTestDriver.SIGMA, System.out); // may throw IOException!
+        //GraphDOT.write(result, DomusTestDriver.SIGMA, System.out); // may throw IOException!
+        OTUtils.displayHTMLInBrowser(lStarDFA.getObservationTable());
 
         Visualization.visualize(result, DomusTestDriver.SIGMA);
 
