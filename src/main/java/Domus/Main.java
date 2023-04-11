@@ -4,7 +4,6 @@ import Domus.DatasetUtils.CustomGson;
 import Domus.DatasetUtils.DataserClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
 import de.learnlib.api.oracle.MembershipOracle;
@@ -64,7 +63,7 @@ public class Main {
         // get learned model
         DFA<?, DomusRecord> result = experiment.getFinalHypothesis();
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = CustomGson.getCustomGson();
         // save result to Json, result is a compactDFA
         try (FileWriter writer = new FileWriter("./DomusDFA.json")) {
             gson.toJson(result, writer);
