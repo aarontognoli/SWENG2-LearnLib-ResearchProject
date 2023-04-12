@@ -1,0 +1,22 @@
+- Use series 2 to create Oracles since they have an objective (preparing tea)
+- Create a different Oracle for each user, the oracle will be an automata generated from data
+    -alphabet: all permutations of sensor/location/state
+    -nodes: activities
+    -edges: sensor data from previous activity to next one
+
+    -accept when state 7 (preparing tea) is reached
+
+-How to create The Oracles
+    -easy but boring: by hand parsing the files and create the automaton
+    -more interesting: let L* create the automaton from a simpler parsing of the files and a specific oracle to see if
+        the input prepares tea
+    -maybe they are the same thing since we need to tell the Oracle what to accept
+
+- Try to merge different oracles
+    -keep only common edges
+    -add all the edges
+
+- Check if different users' data gets accepted from different oracles
+- Check if data for series 1 gets accepted
+    - that could mean that someone made tea
+- Try random words testing
