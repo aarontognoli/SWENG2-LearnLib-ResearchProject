@@ -26,13 +26,17 @@ public class JsonSupportClass<T> {
         this.numStates = numStates;
     }
 
-    CompactDFA<T> getDFA()
+    public CompactDFA<T> getDFA()
     {
         CompactDFA<T> ret = new CompactDFA<>(new GrowingMapAlphabet<>(alphabet),stateCapacity,resizeFactor);
         int k;
-        for (int i=0;i<numStates;i++)
+        for (int i=0;i<acceptance.size();i++)
         {
             ret.addState(acceptance.get(i)==1);
+        }
+        for(int i=acceptance.size();i<numStates;i++)
+        {
+            ret.addState(false);
         }
         ret.setInitial(initial,true);
         for(int i=0;i<numStates;i++) {
