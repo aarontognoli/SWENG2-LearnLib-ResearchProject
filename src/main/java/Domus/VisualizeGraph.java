@@ -16,7 +16,24 @@ import java.lang.reflect.Type;
 public class VisualizeGraph {
 
     public static void main(String[] args) throws IOException {
-        //DOT.renderDOT(new File("./TestDot1u-1d.dot"),true);
-        DOT.renderDOTExternal(new File("./TestDot1u-1d.dot"),"svg");
+        //from json dfa
+        Gson gson = CustomGson.getCustomGson();
+        JsonSupportClass<DomusRecord> myObj;
+        try (Reader reader = new FileReader("./DomusDFA1u-1d.json")) {
+            //Gson solution for generic types
+            Type myType = new TypeToken<JsonSupportClass<DomusRecord>>() {
+            }.getType();
+            // Convert JSON File to Java Object
+            myObj = gson.fromJson(reader, myType);
+            CompactDFA<DomusRecord> dfa = myObj.getDFA();
+
+            StringBuilder dotString = new StringBuilder();
+            GraphDOT.write(dfa,dotString);
+            DOT.renderDOTExternal(dotString.toString(),"svg");
+        }
+
+        //from dot file
+        //DOT.renderDOTExternal(new File("./TestDot1u-1d.dot"),"svg");
     }
 }
+
