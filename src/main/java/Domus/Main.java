@@ -15,6 +15,7 @@ import de.learnlib.oracle.equivalence.SampleSetEQOracle;
 import de.learnlib.util.Experiment;
 import de.learnlib.util.statistics.SimpleProfiler;
 import net.automatalib.automata.fsa.DFA;
+import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.visualization.Visualization;
 
@@ -25,6 +26,7 @@ public class Main {
         // setting up dataset
         Dataset datasetSeries1 = readJson("./DatasetSeries1.json");
         Dataset datasetSeries2 = readJson("./DatasetSeries2.json");
+        final int availableProcessors = Runtime.getRuntime().availableProcessors();
         int nUsers = 1;
         int nDays = 1;
 
@@ -107,7 +109,8 @@ public class Main {
          // may throw IOException!
         OTUtils.displayHTMLInBrowser(lStarDFA.getObservationTable());
 
-        Visualization.visualize(result, DomusTestDriver.SIGMA);
+        //Visualization.visualize(result, DomusTestDriver.SIGMA);
+        VisualizeGraph.visualizeGraph((CompactDFA<?>) result);
 
         System.out.println("-------------------------------------------------------");
     }
