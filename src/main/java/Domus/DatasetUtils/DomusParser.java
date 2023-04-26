@@ -31,7 +31,10 @@ public class DomusParser {
                     attributes.get(3),
                     SensorState.valueOf(attributes.get(4)));
 
-            records.add(dr);
+            // filter out the infrared KitchenSink sensor because it is repetitive and there is
+            // already another sensor that indicates when the sink is open (TapeColdWaterSink)
+            if (!dr.sensorID().equals("IR01"))
+                records.add(dr);
         }
         return records;
     }

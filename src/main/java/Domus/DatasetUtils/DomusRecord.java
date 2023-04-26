@@ -18,4 +18,9 @@ public record DomusRecord(LocalTime time, String sensorID, String sensorName, St
     public int hashCode() {
         return Objects.hash(sensorName, sensorLocation, state);
     }
+
+    @Override
+    public String toString() {
+        return sensorName + "-" + sensorLocation + "-" + state;
+    }
 }
