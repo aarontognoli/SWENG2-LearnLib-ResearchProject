@@ -6,6 +6,7 @@ import Domus.DatasetUtils.DomusRecord;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
+import net.automatalib.serialization.dot.DOTVisualizationHelper;
 import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.visualization.dot.DOT;
 
@@ -19,12 +20,13 @@ public class VisualizeGraph {
 
         visualizeJSON("DomusDFA1u-1d.json");
         //from dot file
-       // visualizeDot("./TestDot1u-1d.dot");
+       //visualizeDot("./TestDot1u-1d.dot");
     }
 
     public static void visualizeGraph(CompactDFA<?> automata) throws IOException
     {
         StringBuilder dotString = new StringBuilder();
+        //CompactDFA<DomusRecord> a = filterGraph((CompactDFA<DomusRecord>) automata);
         GraphDOT.write(automata,dotString);
 
         DOT.renderDOTExternal(dotString.toString(),"svg");
@@ -47,6 +49,16 @@ public class VisualizeGraph {
 
             visualizeGraph(dfa);
         }
+    }
+    private static CompactDFA<DomusRecord> filterGraph(CompactDFA<DomusRecord> automata)
+    {
+        CompactDFA<DomusRecord> ret = new CompactDFA<DomusRecord>(automata);
+        for(Integer i : ret.getStates())
+        {
+            for(DomusRecord dr : ret.getInputAlphabet())
+                ret.removeTransition(i,dr,i);
+        }
+        return ret;
     }
 }
 
