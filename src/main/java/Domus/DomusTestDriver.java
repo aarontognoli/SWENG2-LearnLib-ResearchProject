@@ -48,11 +48,17 @@ public class DomusTestDriver implements SUL<DomusRecord, Boolean> {
     public Boolean step(DomusRecord in) {
         for (int indexSequence = 0; indexSequence < allValidTeaSequences.size(); indexSequence++) {
             int indexStep = currentSteps.get(indexSequence);
-            if (indexStep == allValidTeaSequences.get(indexSequence).size()-1)
+            if (indexStep != allValidTeaSequences.get(indexSequence).size())
+            {
+                if (in.equals(allValidTeaSequences.get(indexSequence).get(indexStep))) {
+                    currentSteps.set(indexSequence, indexStep + 1);
+                }
+                indexStep = currentSteps.get(indexSequence);
+                if(indexStep == allValidTeaSequences.get(indexSequence).size())
+                    return true;
+            }else
                 return true;
-            if (in.equals(allValidTeaSequences.get(indexSequence).get(indexStep))) {
-                currentSteps.set(indexSequence, indexStep + 1);
-            }
+
         }
         return false;
     }
