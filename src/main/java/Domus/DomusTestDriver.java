@@ -4,14 +4,13 @@ import Domus.DatasetUtils.DataserClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import de.learnlib.api.SUL;
 import net.automatalib.words.Alphabet;
-import net.automatalib.words.impl.GrowingMapAlphabet;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class DomusTestDriver implements SUL<DomusRecord, Boolean> {
-    public static final Alphabet<DomusRecord> SIGMA = new GrowingMapAlphabet<>();
+    public static final Alphabet<DomusRecord> SIGMA = new DomusAlphabet<>();
     private final List<List<DomusRecord>> allValidTeaSequences = new ArrayList<>();
 
     List<Integer> currentSteps;
