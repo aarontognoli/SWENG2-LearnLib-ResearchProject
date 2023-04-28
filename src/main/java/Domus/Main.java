@@ -18,11 +18,15 @@ import net.automatalib.automata.fsa.DFA;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.visualization.Visualization;
+import Domus.Experiments.ExperimentUtils;
 
 import java.io.*;
 
+import static Domus.Experiments.ExperimentUtils.readJson;
+
 public class Main {
     public static void main(String[] args) throws IOException {
+
         // setting up dataset
         Dataset datasetSeries1 = readJson("./DatasetSeries1.json");
         Dataset datasetSeries2 = readJson("./DatasetSeries2.json");
@@ -80,7 +84,7 @@ public class Main {
         try (FileWriter writer = new FileWriter("./DomusDFA"+nUsers+"u-"+nDays+"d.json")) {
             gson.toJson(result, writer);
         } catch (IOException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
         // report results
@@ -106,7 +110,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-         // may throw IOException!
+        // may throw IOException!
         OTUtils.displayHTMLInBrowser(lStarDFA.getObservationTable());
 
         //Visualization.visualize(result, DomusTestDriver.SIGMA);
@@ -115,11 +119,5 @@ public class Main {
         System.out.println("-------------------------------------------------------");
     }
 
-    private static Dataset readJson(String path) throws FileNotFoundException {
-        Gson g = CustomGson.getCustomGson();
-        Reader reader = new FileReader(path);
-        Dataset d = g.fromJson(reader,Dataset.class);
-        System.out.println("Read " + path);
-        return d;
-    }
+
 }
