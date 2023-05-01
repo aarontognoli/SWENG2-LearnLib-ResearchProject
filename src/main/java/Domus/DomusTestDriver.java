@@ -10,8 +10,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class DomusTestDriver implements SUL<DomusRecord, Boolean> {
-    public static final Alphabet<DomusRecord> SIGMA = new DomusAlphabet<>();
-    private final List<List<DomusRecord>> allValidTeaSequences = new ArrayList<>();
+
+    public static final Alphabet<DomusRecord> SIGMA = new GrowingMapAlphabet<>();
+    protected final List<List<DomusRecord>> allValidTeaSequences = new ArrayList<>();
+
 
     List<Integer> currentSteps;
 

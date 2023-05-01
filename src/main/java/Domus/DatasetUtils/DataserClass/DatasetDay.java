@@ -26,6 +26,17 @@ public class DatasetDay {
         divideRecords(teaStart,teaEnd);
 
     }
+    public DatasetDay(List<DomusRecord> pre,List<DomusRecord> during, List<DomusRecord> post)
+    {
+        this.records.addAll(pre);
+        this.preTea.addAll(pre);
+
+        this.records.addAll(during);
+        this.duringTea.addAll(during);
+
+        this.records.addAll(post);
+        this.postTea.addAll(post);
+    }
 
     List<DomusRecord> preTea= new ArrayList<>();
     List<DomusRecord> duringTea= new ArrayList<>();
