@@ -15,6 +15,7 @@ import de.learnlib.api.oracle.EquivalenceOracle;
 import de.learnlib.api.oracle.MembershipOracle;
 import de.learnlib.datastructure.observationtable.OTUtils;
 import de.learnlib.oracle.equivalence.DFAWMethodEQOracle;
+import de.learnlib.oracle.equivalence.DFAWpMethodEQOracle;
 import de.learnlib.oracle.equivalence.SampleSetEQOracle;
 import de.learnlib.util.Experiment;
 import de.learnlib.util.statistics.SimpleProfiler;
@@ -28,13 +29,13 @@ import java.io.IOException;
 import static Domus.Experiments.ExperimentUtils.readJson;
 
 public class TestDriverWMethodLstar {
-    //todo try with an even smaller dataset
+    //using custom Json
     public static void main(String[] args) throws IOException {
         // setting up dataset
-        Dataset datasetSeries1 = readJson("./DatasetSeries1.json");
-        Dataset datasetSeries2 = readJson("./DatasetSeries2.json");
-        int nUsers = 1;
-        int nDays = 1;
+        Dataset datasetSeries1 = readJson("./CustomJson.json");
+        Dataset datasetSeries2 = readJson("./CustomJson.json");
+        int nUsers = 2;
+        int nDays = 2;
 
         // test driver
         DomusTestDriver testDriver = new DomusTestDriver(nUsers, nDays, datasetSeries2, datasetSeries1);
@@ -43,7 +44,7 @@ public class TestDriverWMethodLstar {
         MembershipOracle.DFAMembershipOracle<DomusRecord> mOracle = new DomusOracle(testDriver);
 
         // equivalence oracle
-        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFAWMethodEQOracle<>(mOracle, 2);
+        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFAWpMethodEQOracle<>(mOracle, 6);
 
 
         // l star algorithm
