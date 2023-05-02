@@ -1,10 +1,7 @@
-package Domus;
+package Domus.DatasetUtils;
 
-import Domus.DatasetUtils.CustomGson;
 import Domus.DatasetUtils.DataserClass.Dataset;
 import Domus.DatasetUtils.DataserClass.DatasetDay;
-import Domus.DatasetUtils.DomusActivityRecord;
-import Domus.DatasetUtils.DomusParser;
 import com.google.gson.Gson;
 
 import java.io.FileWriter;

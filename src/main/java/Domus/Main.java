@@ -3,6 +3,7 @@ package Domus;
 import Domus.DatasetUtils.CustomGson;
 import Domus.DatasetUtils.DataserClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
+import Domus.Performance.PerformanceEvaluator;
 import com.google.gson.Gson;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
@@ -15,11 +16,8 @@ import net.automatalib.automata.fsa.DFA;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.serialization.dot.GraphDOT;
 
-import net.automatalib.visualization.Visualization;
-import Domus.Experiments.ExperimentUtils;
-
-
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import static Domus.Experiments.ExperimentUtils.readJson;
 
@@ -114,41 +112,20 @@ public class Main {
 
         // check accuracy, precision and recall
         // for now it checks all 5 days of the missing users, parameters to tune...
-        int samples = (6 - nUsers) * 5 * 3;
-        int truePos = 0;
-        int trueNeg = 0;
-        int falsePos = 0;
-        int falseNeg = 0;
+        PerformanceEvaluator performanceEvaluator = new PerformanceEvaluator(result);
         for (int u = nUsers; u < 6; u++) {
             for (int d = 0; d < 5; d++) {
-                if (result.accepts(new DomusWord(datasetSeries2.getUsers().get(u).get(d).getDuringTea()))) {
-                    truePos++;
-                } else {
-                    falseNeg++;
-                }
-
-                if (!result.accepts(new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPreTea()))) {
-                    trueNeg++;
-                } else {
-                    falsePos++;
-                }
-
-                if (!result.accepts(new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPostTea()))) {
-                    trueNeg++;
-                } else {
-                    falsePos++;
-                }
+                performanceEvaluator.addToPositive(new DomusWord(datasetSeries2.getUsers().get(u).get(d).getDuringTea()));
+                performanceEvaluator.addToNegative(new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPreTea()));
+                performanceEvaluator.addToNegative(new DomusWord(datasetSeries2.getUsers().get(u).get(d).getPostTea()));
             }
         }
+        performanceEvaluator.run();
         System.out.println("\nPerformance:");
-        // Accuracy: fraction of the samples correctly classified in the dataset
-        System.out.format("Accuracy: %f\n", 100.0*(truePos + trueNeg)/samples);
-        // Precision: fraction of samples correctly classified in the positive class among the ones
-        // classified in the positive class
-        System.out.format("Precision: %f\n", 100.0*truePos/(truePos + falsePos));
-        // Recall: fraction of samples correctly classified in the positive class among the ones belonging
-        // to the positive class
-        System.out.format("Recall: %f\n", 100.0*truePos/(truePos + falseNeg));
+        System.out.format("Accuracy: %f\n", performanceEvaluator.getAccuracy());
+        System.out.format("Precision: %f\n", performanceEvaluator.getPrecision());
+        System.out.format("Recall: %f\n", performanceEvaluator.getRecall());
+        System.out.format("F1score: %f\n", performanceEvaluator.getF1score());
 
         OTUtils.displayHTMLInBrowser(lStarDFA.getObservationTable()); // may throw IOException!
 
