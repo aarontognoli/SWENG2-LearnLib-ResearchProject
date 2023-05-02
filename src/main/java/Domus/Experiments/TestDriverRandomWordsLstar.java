@@ -61,10 +61,11 @@ public class TestDriverRandomWordsLstar {
         DFA<?, DomusRecord> result = experiment.getFinalHypothesis();
 
         ExperimentUtils.log(experiment,result,DomusTestDriver.SIGMA);
+        ExperimentType type = ExperimentType.TESTDRIVER_RANDOMWORDS_LSTAR;
         File image=null;
         try {
-            ExperimentUtils.printFiles(result, lStarDFA, nUsers, nDays, ExperimentType.TESTDRIVER_RANDOMWORDS_LSTAR,"Custom");
-            image = ExperimentUtils.printDotSVG(result,nUsers,nDays,ExperimentType.TESTDRIVER_RANDOMWORDS_LSTAR,"Custom");
+            ExperimentUtils.printFiles(result, lStarDFA, nUsers, nDays, type,"Custom");
+            image = ExperimentUtils.printDotSVG(result,nUsers,nDays,type,"Custom");
         }
         catch (Exception e)
         {

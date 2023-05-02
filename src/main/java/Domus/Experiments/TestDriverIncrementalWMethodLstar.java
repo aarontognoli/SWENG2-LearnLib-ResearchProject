@@ -16,6 +16,7 @@ import de.learnlib.util.Experiment;
 import net.automatalib.automata.fsa.DFA;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 
+import java.io.File;
 import java.io.IOException;
 
 import static Domus.Experiments.ExperimentUtils.readJson;
@@ -62,9 +63,11 @@ public class TestDriverIncrementalWMethodLstar {
         DFA<?, DomusRecord> result = experiment.getFinalHypothesis();
 
         ExperimentUtils.log(experiment,result,DomusTestDriver.SIGMA);
-
+        ExperimentType type = ExperimentType.TESTDRIVER_INCREMENTALWMETHODEQ_LSTAR;
+        File image=null;
         try {
-            ExperimentUtils.printFiles(result, lStarDFA, nUsers, nDays, ExperimentType.TESTDRIVER_INCREMENTALWMETHODEQ_LSTAR,"Custom");
+            ExperimentUtils.printFiles(result, lStarDFA, nUsers, nDays, type,"Custom");
+            image = ExperimentUtils.printDotSVG(result,nUsers,nDays,type,"Custom");
         }
         catch (Exception e)
         {
@@ -73,7 +76,7 @@ public class TestDriverIncrementalWMethodLstar {
         // may throw IOException!
         OTUtils.displayHTMLInBrowser(lStarDFA.getObservationTable());
 
-        VisualizeGraph.visualizeGraph((CompactDFA<?>) result);
+        VisualizeGraph.visualizeFile(image);
 
     }
 }
