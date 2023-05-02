@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DomusTestDriver implements SUL<DomusRecord, Boolean> {
 
-    public static final Alphabet<DomusRecord> SIGMA = new GrowingMapAlphabet<>();
+    public static final Alphabet<DomusRecord> SIGMA = new DomusAlphabet<>();
     protected final List<List<DomusRecord>> allValidTeaSequences = new ArrayList<>();
 
 
