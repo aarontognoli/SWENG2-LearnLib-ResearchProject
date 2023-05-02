@@ -14,13 +14,20 @@ import de.learnlib.oracle.equivalence.SampleSetEQOracle;
 import de.learnlib.util.Experiment;
 import de.learnlib.util.statistics.SimpleProfiler;
 import net.automatalib.automata.fsa.DFA;
+import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.serialization.dot.GraphDOT;
+import net.automatalib.visualization.dot.DOT;
 import net.automatalib.words.Alphabet;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.awt.*;
 import java.io.*;
 enum ExperimentType {
     TESTDRIVER_SAMPLESETEQ_LSTAR,
     TESTDRIVER_WMETHODEQ_LSTAR,
+    TESTDRIVER_INCREMENTALWMETHODEQ_LSTAR,
+    TESTDRIVER_RANDOMWMETHODEQ_LSTAR,
+    TESTDRIVER_RANDOMWORDS_LSTAR,
     TESTDRIVERFULL_SAMPLESETEQ_LSTAR,
     TESTDRIVERFULL_WMETHODEQ_LSTAR,
     TESTDRIVER_SAMPLESETEQ_RIVEST
@@ -34,22 +41,36 @@ public class ExperimentUtils {
         System.out.println("Read " + path);
         return d;
     }
-    public static void printFiles(DFA<?, DomusRecord> result, ExtensibleLStarDFA<?> lstar, int nUsers, int nDays, ExperimentType type) throws IOException {
+    public static void printFiles(DFA<?, DomusRecord> result, ExtensibleLStarDFA<?> lstar, int nUsers, int nDays, ExperimentType type, String comment) throws IOException {
         String suffix = "_"+type+"_"+nUsers+"u-"+nDays+"d";
 
         Gson gson = CustomGson.getCustomGson();
 
         // save result to Json, result is a compactDFA, DotFile and ObservationTable
-        try (FileWriter writer  = new FileWriter("./Results/Json/DomusDFA"+suffix+".json")) {
+        try (FileWriter writer  = new FileWriter("./Results/Json/DomusDFA"+suffix+"_"+comment+".json")) {
             gson.toJson(result, writer);
         }
-        try (FileWriter writer = new FileWriter("./Results/DotFiles/TestDot"+suffix+".dot")) {
+        try (FileWriter writer = new FileWriter("./Results/DotFiles/TestDot"+suffix+"_"+comment+".dot")) {
             GraphDOT.write(result, DomusTestDriver.SIGMA, writer);
         }
 
-        File out = new File("./Results/ObservationTable/OT"+suffix+".html");
+        File out = new File("./Results/ObservationTable/OT"+suffix+"_"+comment+".html");
         OTUtils.writeHTMLToFile(lstar.getObservationTable(),out);
 
+    }
+
+    public static File printDotSVG(DFA<?, DomusRecord> result,int nUsers, int nDays, ExperimentType type, String comment) throws IOException {
+        String suffix = "_"+type+"_"+nUsers+"u-"+nDays+"d";
+        File out = new File("./Results/XML/"+suffix+"_"+comment+".svg");
+        StringBuilder dotString = new StringBuilder();
+        GraphDOT.write((CompactDFA<DomusRecord>)result,dotString);
+        DOT.runDOT(new StringReader(dotString.toString()), "svg", out);
+
+        return out;
+    }
+
+    public static void printFiles(DFA<?, DomusRecord> result, ExtensibleLStarDFA<?> lstar, int nUsers, int nDays, ExperimentType type) throws IOException {
+        printFiles(result,lstar,nUsers,nDays,type,"");
     }
 
     public static void log( Experiment<?> experiment, DFA<?, DomusRecord> result, Alphabet<?> alphabet)
