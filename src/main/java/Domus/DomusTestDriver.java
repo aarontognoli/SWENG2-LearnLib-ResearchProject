@@ -1,6 +1,6 @@
 package Domus;
 
-import Domus.DatasetUtils.DataserClass.Dataset;
+import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import de.learnlib.api.SUL;
 import net.automatalib.words.Alphabet;

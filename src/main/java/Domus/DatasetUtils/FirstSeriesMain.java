@@ -1,15 +1,11 @@
-package Domus;
+package Domus.DatasetUtils;
 
-import Domus.DatasetUtils.CustomGson;
-import Domus.DatasetUtils.DataserClass.Dataset;
-import Domus.DatasetUtils.DataserClass.DatasetDay;
-import com.google.gson.*;
+import Domus.DatasetUtils.DatasetClass.Dataset;
+import Domus.DatasetUtils.DatasetClass.DatasetDay;
+import com.google.gson.Gson;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class FirstSeriesMain {
     public static void main(String[] args) {

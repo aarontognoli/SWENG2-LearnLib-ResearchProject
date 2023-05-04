@@ -1,14 +1,15 @@
 package Domus.Experiments;
 
+import AstarBstar.JsonSupportClass;
 import Domus.DatasetUtils.CustomGson;
-import Domus.DatasetUtils.DataserClass.Dataset;
+import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import Domus.DomusTestDriver;
 import Domus.DomusWord;
+import Domus.Performance.PerformanceEvaluator;
 import Domus.VisualizeGraph;
 import com.google.gson.Gson;
-import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
-import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
+import com.google.gson.reflect.TypeToken;
 import de.learnlib.algorithms.lstar.dfa.ExtensibleLStarDFA;
 import de.learnlib.api.oracle.EquivalenceOracle;
 import de.learnlib.api.oracle.MembershipOracle;
@@ -21,10 +22,10 @@ import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.visualization.dot.DOT;
 import net.automatalib.words.Alphabet;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.awt.*;
 import java.io.*;
+import java.lang.reflect.Type;
+
 enum ExperimentType {
     TESTDRIVER_SAMPLESETEQ_LSTAR,
     TESTDRIVER_WMETHODEQ_LSTAR,
@@ -120,6 +121,35 @@ public class ExperimentUtils {
             }
         }
         return eqOracle;
+    }
+
+    public static DFA<?, DomusRecord> DFAfromJSON(String path) throws IOException {
+        Gson gson = CustomGson.getCustomGson();
+        JsonSupportClass<DomusRecord> myObj;
+        try (Reader reader = new FileReader(path)) {
+            Type myType = new TypeToken<JsonSupportClass<DomusRecord>>() {
+            }.getType();
+            // Convert JSON File to Java Object
+            myObj = gson.fromJson(reader, myType);
+            return myObj.getDFA();
+        }
+    }
+
+    public static void performanceLog(Dataset testSet, DFA<?, DomusRecord> dfa, int nUsers) {
+        PerformanceEvaluator performanceEvaluator = new PerformanceEvaluator(dfa);
+        for (int u = nUsers; u < 6; u++) {
+            for (int d = 0; d < 5; d++) {
+                performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea()));
+                performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPreTea()));
+                performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPostTea()));
+            }
+        }
+        performanceEvaluator.run();
+        System.out.println("\nPerformance:");
+        System.out.format("Accuracy: %f\n", performanceEvaluator.getAccuracy());
+        System.out.format("Precision: %f\n", performanceEvaluator.getPrecision());
+        System.out.format("Recall: %f\n", performanceEvaluator.getRecall());
+        System.out.format("F1score: %f\n", performanceEvaluator.getF1score());
     }
 
     public static void executeExperiment(int nUsers,

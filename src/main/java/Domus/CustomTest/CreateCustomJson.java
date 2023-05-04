@@ -1,7 +1,7 @@
 package Domus.CustomTest;
 
-import Domus.DatasetUtils.DataserClass.Dataset;
-import Domus.DatasetUtils.DataserClass.DatasetDay;
+import Domus.DatasetUtils.DatasetClass.Dataset;
+import Domus.DatasetUtils.DatasetClass.DatasetDay;
 import Domus.DatasetUtils.DomusRecord;
 import Domus.DatasetUtils.SensorState;
 import com.google.gson.Gson;
