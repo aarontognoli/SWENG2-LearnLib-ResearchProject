@@ -1,21 +1,15 @@
 package Domus.Experiments;
 
-import Domus.DatasetUtils.DataserClass.Dataset;
+import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import Domus.DomusOracle;
 import Domus.DomusTestDriver;
-import Domus.VisualizeGraph;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
 import de.learnlib.api.oracle.EquivalenceOracle;
 import de.learnlib.api.oracle.MembershipOracle;
-import de.learnlib.datastructure.observationtable.OTUtils;
-import de.learnlib.oracle.equivalence.DFARandomWMethodEQOracle;
 import de.learnlib.oracle.equivalence.DFARandomWordsEQOracle;
-import de.learnlib.util.Experiment;
-import net.automatalib.automata.fsa.DFA;
 
-import java.io.File;
 import java.io.IOException;
 
 import static Domus.Experiments.ExperimentUtils.executeExperiment;

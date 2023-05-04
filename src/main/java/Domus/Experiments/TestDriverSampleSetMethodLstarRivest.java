@@ -4,16 +4,10 @@ import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import Domus.DomusOracle;
 import Domus.DomusTestDriver;
-import Domus.VisualizeGraph;
 import de.learnlib.algorithms.rivestschapire.RivestSchapireDFA;
 import de.learnlib.api.oracle.MembershipOracle;
-import de.learnlib.datastructure.observationtable.OTUtils;
 import de.learnlib.oracle.equivalence.SampleSetEQOracle;
-import de.learnlib.util.Experiment;
-import net.automatalib.automata.fsa.DFA;
-import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 
-import java.io.File;
 import java.io.IOException;
 
 import static Domus.Experiments.ExperimentUtils.*;
