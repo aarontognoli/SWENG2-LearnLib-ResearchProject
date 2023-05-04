@@ -2,14 +2,13 @@ package Domus.Experiments;
 
 import AstarBstar.JsonSupportClass;
 import Domus.DatasetUtils.CustomGson;
-import Domus.DatasetUtils.DataserClass.Dataset;
+import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import Domus.DomusTestDriver;
 import Domus.DomusWord;
 import Domus.Performance.PerformanceEvaluator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
 import de.learnlib.algorithms.lstar.dfa.ExtensibleLStarDFA;
 import de.learnlib.api.oracle.MembershipOracle;
 import de.learnlib.datastructure.observationtable.OTUtils;

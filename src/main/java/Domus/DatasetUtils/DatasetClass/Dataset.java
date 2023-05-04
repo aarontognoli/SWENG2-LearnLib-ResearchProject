@@ -1,7 +1,6 @@
-package Domus.DatasetUtils.DataserClass;
+package Domus.DatasetUtils.DatasetClass;
 
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.List;
 
 public class Dataset {

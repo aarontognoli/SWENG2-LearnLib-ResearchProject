@@ -1,6 +1,6 @@
 package Domus.Experiments;
 
-import Domus.DatasetUtils.DataserClass.Dataset;
+import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import Domus.DomusOracle;
 import Domus.DomusTestDriver;
@@ -8,10 +8,8 @@ import Domus.DomusTestDriverFullList;
 import Domus.VisualizeGraph;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
-import de.learnlib.api.oracle.EquivalenceOracle;
 import de.learnlib.api.oracle.MembershipOracle;
 import de.learnlib.datastructure.observationtable.OTUtils;
-import de.learnlib.oracle.equivalence.DFAWMethodEQOracle;
 import de.learnlib.oracle.equivalence.SampleSetEQOracle;
 import de.learnlib.util.Experiment;
 import net.automatalib.automata.fsa.DFA;

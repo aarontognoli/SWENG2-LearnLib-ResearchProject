@@ -1,4 +1,4 @@
-package Domus.DatasetUtils.DataserClass;
+package Domus.DatasetUtils.DatasetClass;
 
 
 import Domus.DatasetUtils.DomusParser;

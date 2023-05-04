@@ -1,7 +1,7 @@
 package Domus.DatasetUtils;
 
-import Domus.DatasetUtils.DataserClass.Dataset;
-import Domus.DatasetUtils.DataserClass.DatasetDay;
+import Domus.DatasetUtils.DatasetClass.Dataset;
+import Domus.DatasetUtils.DatasetClass.DatasetDay;
 import com.google.gson.Gson;
 
 import java.io.FileWriter;

@@ -1,13 +1,10 @@
 package Domus.Experiments;
 
-import Domus.DatasetUtils.DataserClass.Dataset;
+import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import Domus.DomusOracle;
 import Domus.DomusTestDriver;
-import Domus.DomusTestDriverFullList;
 import Domus.VisualizeGraph;
-import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
-import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
 import de.learnlib.algorithms.rivestschapire.RivestSchapireDFA;
 import de.learnlib.api.oracle.MembershipOracle;
 import de.learnlib.datastructure.observationtable.OTUtils;
