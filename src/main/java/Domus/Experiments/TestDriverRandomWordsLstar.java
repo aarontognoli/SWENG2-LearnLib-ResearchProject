@@ -31,7 +31,7 @@ public class TestDriverRandomWordsLstar {
         MembershipOracle.DFAMembershipOracle<DomusRecord> mOracle = new DomusOracle(testDriver);
 
         // equivalence oracle
-        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFARandomWordsEQOracle<DomusRecord>(mOracle,5,10,1000000);
+        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFARandomWordsEQOracle<>(mOracle, 5, 10, 1000000);
 
 
         // l star algorithm
