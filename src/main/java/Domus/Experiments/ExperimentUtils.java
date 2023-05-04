@@ -5,9 +5,12 @@ import Domus.DatasetUtils.DataserClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import Domus.DomusTestDriver;
 import Domus.DomusWord;
+import Domus.VisualizeGraph;
 import com.google.gson.Gson;
 import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFA;
+import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
 import de.learnlib.algorithms.lstar.dfa.ExtensibleLStarDFA;
+import de.learnlib.api.oracle.EquivalenceOracle;
 import de.learnlib.api.oracle.MembershipOracle;
 import de.learnlib.datastructure.observationtable.OTUtils;
 import de.learnlib.oracle.equivalence.SampleSetEQOracle;
@@ -28,6 +31,7 @@ enum ExperimentType {
     TESTDRIVER_WMETHODEQ_RIVEST,
     TESTDRIVER_INCREMENTALWMETHODEQ_LSTAR,
     TESTDRIVER_RANDOMWMETHODEQ_LSTAR,
+    TESTDRIVER_RANDOMWMETHODEQ_RIVEST,
     TESTDRIVER_RANDOMWORDS_LSTAR,
     TESTDRIVERFULL_SAMPLESETEQ_LSTAR,
     TESTDRIVERFULL_WMETHODEQ_LSTAR,
@@ -60,10 +64,12 @@ public class ExperimentUtils {
 
     }
 
-    public static File printDotSVG(DFA<?, DomusRecord> result,int nUsers, int nDays, ExperimentType type, String comment) throws IOException {
+    public static File printDotSVG(DFA<?, DomusRecord> result,int nUsers, int nDays, ExperimentType type, String comment, Boolean filter) throws IOException {
         String suffix = "_"+type+"_"+nUsers+"u-"+nDays+"d";
         File out = new File("./Results/XML/"+suffix+"_"+comment+".svg");
         StringBuilder dotString = new StringBuilder();
+        if(filter)
+            result = VisualizeGraph.filterGraph((CompactDFA<DomusRecord>)result);
         GraphDOT.write((CompactDFA<DomusRecord>)result,dotString);
         DOT.runDOT(new StringReader(dotString.toString()), "svg", out);
 
@@ -114,5 +120,45 @@ public class ExperimentUtils {
             }
         }
         return eqOracle;
+    }
+
+    public static void executeExperiment(int nUsers,
+                                         int nDays,
+                                         ExtensibleLStarDFA<DomusRecord> lStar,
+                                         EquivalenceOracle<? super DFA<?, DomusRecord>, DomusRecord, Boolean> eqOracle,
+                                         ExperimentType type,
+                                         Boolean filter,
+                                         String comment) throws IOException {
+
+
+        // experiment
+        Experiment.DFAExperiment<DomusRecord> experiment = new Experiment.DFAExperiment<>(lStar, eqOracle, DomusTestDriver.SIGMA);
+
+        // turn on time profiling
+        experiment.setProfile(true);
+
+        // enable logging of models
+        experiment.setLogModels(true);
+
+        // run experiment
+        experiment.run();
+
+        // get learned model
+        DFA<?, DomusRecord> result = experiment.getFinalHypothesis();
+
+        ExperimentUtils.log(experiment,result,DomusTestDriver.SIGMA);
+        File image=null;
+        try {
+            ExperimentUtils.printFiles(result, lStar, nUsers, nDays, type);
+            image = ExperimentUtils.printDotSVG(result,nUsers,nDays,type,comment,filter);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        // may throw IOException!
+        OTUtils.displayHTMLInBrowser(lStar.getObservationTable());
+
+        VisualizeGraph.visualizeFile(image);
     }
 }

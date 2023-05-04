@@ -19,6 +19,7 @@ import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import java.io.File;
 import java.io.IOException;
 
+import static Domus.Experiments.ExperimentUtils.executeExperiment;
 import static Domus.Experiments.ExperimentUtils.readJson;
 
 public class TestDriverIncrementalWMethodLstar {
@@ -47,36 +48,6 @@ public class TestDriverIncrementalWMethodLstar {
                 .withOracle(mOracle)
                 .create();
 
-        // experiment
-        Experiment.DFAExperiment<DomusRecord> experiment = new Experiment.DFAExperiment<>(lStarDFA, eqOracle, DomusTestDriver.SIGMA);
-
-        // turn on time profiling
-        experiment.setProfile(true);
-
-        // enable logging of models
-        experiment.setLogModels(true);
-
-        // run experiment
-        experiment.run();
-
-        // get learned model
-        DFA<?, DomusRecord> result = experiment.getFinalHypothesis();
-
-        ExperimentUtils.log(experiment,result,DomusTestDriver.SIGMA);
-        ExperimentType type = ExperimentType.TESTDRIVER_INCREMENTALWMETHODEQ_LSTAR;
-        File image=null;
-        try {
-            ExperimentUtils.printFiles(result, lStarDFA, nUsers, nDays, type,"Custom");
-            image = ExperimentUtils.printDotSVG(result,nUsers,nDays,type,"Custom");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        // may throw IOException!
-        OTUtils.displayHTMLInBrowser(lStarDFA.getObservationTable());
-
-        VisualizeGraph.visualizeFile(image);
-
+        executeExperiment(nUsers, nDays, lStarDFA, eqOracle, ExperimentType.TESTDRIVER_INCREMENTALWMETHODEQ_LSTAR, false, "Custom");
     }
 }

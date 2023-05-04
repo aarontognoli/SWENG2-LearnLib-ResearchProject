@@ -62,7 +62,7 @@ public class VisualizeGraph {
         }
     }
 
-    private static CompactDFA<DomusRecord> filterGraph(CompactDFA<DomusRecord> automata)
+    public static CompactDFA<DomusRecord> filterGraph(CompactDFA<DomusRecord> automata)
     {
         CompactDFA<DomusRecord> ret = new CompactDFA<>(automata);
         for(Integer i : ret.getStates())

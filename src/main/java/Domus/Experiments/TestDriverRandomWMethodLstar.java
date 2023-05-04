@@ -19,14 +19,15 @@ import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import java.io.File;
 import java.io.IOException;
 
+import static Domus.Experiments.ExperimentUtils.executeExperiment;
 import static Domus.Experiments.ExperimentUtils.readJson;
 
 public class TestDriverRandomWMethodLstar {
     //using custom Json
     public static void main(String[] args) throws IOException {
         // setting up dataset
-        Dataset datasetSeries1 = readJson("./CustomJson.json");
-        Dataset datasetSeries2 = readJson("./CustomJson.json");
+        Dataset datasetSeries1 = readJson("./DatasetSeries1.json");
+        Dataset datasetSeries2 = readJson("./DatasetSeries2.json");
         int nUsers = 2;
         int nDays = 2;
 
@@ -37,7 +38,7 @@ public class TestDriverRandomWMethodLstar {
         MembershipOracle.DFAMembershipOracle<DomusRecord> mOracle = new DomusOracle(testDriver);
 
         // equivalence oracle
-        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFARandomWMethodEQOracle<>(mOracle, 5,2,10000);
+        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFARandomWMethodEQOracle<>(mOracle, 60,10,100000000);
 
 
         // l star algorithm
@@ -46,36 +47,7 @@ public class TestDriverRandomWMethodLstar {
                 .withOracle(mOracle)
                 .create();
 
-        // experiment
-        Experiment.DFAExperiment<DomusRecord> experiment = new Experiment.DFAExperiment<>(lStarDFA, eqOracle, DomusTestDriver.SIGMA);
-
-        // turn on time profiling
-        experiment.setProfile(true);
-
-        // enable logging of models
-        experiment.setLogModels(true);
-
-        // run experiment
-        experiment.run();
-
-        // get learned model
-        DFA<?, DomusRecord> result = experiment.getFinalHypothesis();
-
-        ExperimentUtils.log(experiment,result,DomusTestDriver.SIGMA);
-        ExperimentType type = ExperimentType.TESTDRIVER_RANDOMWMETHODEQ_LSTAR;
-        File image=null;
-        try {
-            ExperimentUtils.printFiles(result, lStarDFA, nUsers, nDays, type,"Custom");
-            image = ExperimentUtils.printDotSVG(result,nUsers,nDays,type,"Custom");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        // may throw IOException!
-        OTUtils.displayHTMLInBrowser(lStarDFA.getObservationTable());
-
-        VisualizeGraph.visualizeFile(image);
+        executeExperiment(nUsers,nDays,lStarDFA,eqOracle,ExperimentType.TESTDRIVER_RANDOMWMETHODEQ_LSTAR,true,"");
 
     }
 }
