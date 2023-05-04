@@ -1,5 +1,6 @@
 package AstarBstar;
 
+import Domus.DomusAlphabet;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.words.impl.GrowingMapAlphabet;
 
@@ -28,7 +29,7 @@ public class JsonSupportClass<T> {
 
     public CompactDFA<T> getDFA()
     {
-        CompactDFA<T> ret = new CompactDFA<>(new GrowingMapAlphabet<>(alphabet),stateCapacity,resizeFactor);
+        CompactDFA<T> ret = new CompactDFA<>(new DomusAlphabet<>(alphabet),stateCapacity,resizeFactor);
         int k;
         for (int i=0;i<acceptance.size();i++)
         {

@@ -1,6 +1,8 @@
 package Domus.Performance;
 
 import Domus.DatasetUtils.DomusRecord;
+import Domus.DomusOracle;
+import Domus.DomusWord;
 import net.automatalib.automata.fsa.DFA;
 import net.automatalib.words.Word;
 
@@ -8,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PerformanceEvaluator {
-    private final List<Word<DomusRecord>> positiveSequences;
-    private final List<Word<DomusRecord>> negativeSequences;
+    private final List<DomusWord> positiveSequences;
+    private final List<DomusWord> negativeSequences;
     private final DFA<?, DomusRecord> dfa;
     private double accuracy; // fraction of the samples correctly classified in the dataset
     private double precision; // fraction of samples correctly classified in the positive class
@@ -24,7 +26,7 @@ public class PerformanceEvaluator {
         this.negativeSequences = new ArrayList<>();
     }
 
-    public PerformanceEvaluator(DFA<?, DomusRecord> dfa, List<Word<DomusRecord>> positiveSequences, List<Word<DomusRecord>> negativeSequences) {
+    public PerformanceEvaluator(DFA<?, DomusRecord> dfa, List<DomusWord> positiveSequences, List<DomusWord> negativeSequences) {
         this.dfa = dfa;
         this.positiveSequences = positiveSequences;
         this.negativeSequences = negativeSequences;
@@ -36,7 +38,7 @@ public class PerformanceEvaluator {
         int trueNeg = 0;
         int falsePos = 0;
         int falseNeg = 0;
-        for (Word<DomusRecord> seq : positiveSequences) {
+        for (DomusWord seq : positiveSequences) {
             if (dfa.accepts(seq)) {
                 truePos++;
             } else {
@@ -44,7 +46,7 @@ public class PerformanceEvaluator {
             }
         }
 
-        for (Word<DomusRecord> seq : negativeSequences) {
+        for (DomusWord seq : negativeSequences) {
             if (!dfa.accepts(seq)) {
                 trueNeg++;
             } else {
@@ -58,19 +60,19 @@ public class PerformanceEvaluator {
         F1score = (precision + recall) > 0 ? 2 * precision * recall / (precision + recall) : 0;
     }
 
-    public void addToPositive(Word<DomusRecord> sequence) {
+    public void addToPositive(DomusWord sequence) {
         positiveSequences.add(sequence);
     }
 
-    public void addToPositive(List<Word<DomusRecord>> sequences) {
+    public void addToPositive(List<DomusWord> sequences) {
         positiveSequences.addAll(sequences);
     }
 
-    public void addToNegative(Word<DomusRecord> sequence) {
+    public void addToNegative(DomusWord sequence) {
         positiveSequences.add(sequence);
     }
 
-    public void addToNegative(List<Word<DomusRecord>> sequences) {
+    public void addToNegative(List<DomusWord> sequences) {
         positiveSequences.addAll(sequences);
     }
 
