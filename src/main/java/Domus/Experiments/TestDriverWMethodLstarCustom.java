@@ -23,12 +23,14 @@ import net.automatalib.automata.fsa.DFA;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.serialization.dot.GraphDOT;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import static Domus.Experiments.ExperimentUtils.executeExperiment;
 import static Domus.Experiments.ExperimentUtils.readJson;
 
-public class TestDriverWMethodLstar {
+public class TestDriverWMethodLstarCustom {
     //using custom Json
     public static void main(String[] args) throws IOException {
         // setting up dataset
@@ -54,33 +56,7 @@ public class TestDriverWMethodLstar {
                 .create();
 
         // experiment
-        Experiment.DFAExperiment<DomusRecord> experiment = new Experiment.DFAExperiment<>(lStarDFA, eqOracle, DomusTestDriver.SIGMA);
-
-        // turn on time profiling
-        experiment.setProfile(true);
-
-        // enable logging of models
-        experiment.setLogModels(true);
-
-        // run experiment
-        experiment.run();
-
-        // get learned model
-        DFA<?, DomusRecord> result = experiment.getFinalHypothesis();
-
-        ExperimentUtils.log(experiment,result,DomusTestDriver.SIGMA);
-
-        try {
-            ExperimentUtils.printFiles(result, lStarDFA, nUsers, nDays, ExperimentType.TESTDRIVER_WMETHODEQ_LSTAR);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        // may throw IOException!
-        OTUtils.displayHTMLInBrowser(lStarDFA.getObservationTable());
-
-        VisualizeGraph.visualizeGraph((CompactDFA<?>) result);
+        executeExperiment(nUsers,nDays,lStarDFA,eqOracle,ExperimentType.TESTDRIVER_WMETHODEQ_LSTAR,false,"Custom");
 
     }
 }
