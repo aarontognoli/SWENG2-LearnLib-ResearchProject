@@ -4,6 +4,7 @@ import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import de.learnlib.api.SUL;
 import net.automatalib.words.Alphabet;
+import net.automatalib.words.impl.GrowingMapAlphabet;
 
 import java.util.ArrayList;
 import java.util.Collections;

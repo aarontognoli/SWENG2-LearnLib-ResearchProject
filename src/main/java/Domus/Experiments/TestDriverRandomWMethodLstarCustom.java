@@ -1,6 +1,6 @@
 package Domus.Experiments;
 
-import Domus.DatasetUtils.DatasetClass.Dataset;
+import Domus.DatasetUtils.DataserClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
 import Domus.DomusOracle;
 import Domus.DomusTestDriver;
@@ -10,16 +10,17 @@ import de.learnlib.algorithms.lstar.dfa.ClassicLStarDFABuilder;
 import de.learnlib.api.oracle.EquivalenceOracle;
 import de.learnlib.api.oracle.MembershipOracle;
 import de.learnlib.datastructure.observationtable.OTUtils;
-import de.learnlib.oracle.equivalence.DFAWpMethodEQOracle;
+import de.learnlib.oracle.equivalence.DFARandomWMethodEQOracle;
 import de.learnlib.util.Experiment;
 import net.automatalib.automata.fsa.DFA;
-import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 
+import java.io.File;
 import java.io.IOException;
 
+import static Domus.Experiments.ExperimentUtils.executeExperiment;
 import static Domus.Experiments.ExperimentUtils.readJson;
 
-public class TestDriverWMethodLstar {
+public class TestDriverRandomWMethodLstarCustom {
     //using custom Json
     public static void main(String[] args) throws IOException {
         // setting up dataset
@@ -35,7 +36,7 @@ public class TestDriverWMethodLstar {
         MembershipOracle.DFAMembershipOracle<DomusRecord> mOracle = new DomusOracle(testDriver);
 
         // equivalence oracle
-        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFAWpMethodEQOracle<>(mOracle, 6);
+        EquivalenceOracle.DFAEquivalenceOracle<DomusRecord> eqOracle = new DFARandomWMethodEQOracle<>(mOracle, 5,2,10000);
 
 
         // l star algorithm
@@ -44,34 +45,6 @@ public class TestDriverWMethodLstar {
                 .withOracle(mOracle)
                 .create();
 
-        // experiment
-        Experiment.DFAExperiment<DomusRecord> experiment = new Experiment.DFAExperiment<>(lStarDFA, eqOracle, DomusTestDriver.SIGMA);
-
-        // turn on time profiling
-        experiment.setProfile(true);
-
-        // enable logging of models
-        experiment.setLogModels(true);
-
-        // run experiment
-        experiment.run();
-
-        // get learned model
-        DFA<?, DomusRecord> result = experiment.getFinalHypothesis();
-
-        ExperimentUtils.log(experiment,result,DomusTestDriver.SIGMA);
-
-        try {
-            ExperimentUtils.printFiles(result, lStarDFA, nUsers, nDays, ExperimentType.TESTDRIVER_WMETHODEQ_LSTAR);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        // may throw IOException!
-        OTUtils.displayHTMLInBrowser(lStarDFA.getObservationTable());
-
-        VisualizeGraph.visualizeGraph((CompactDFA<?>) result);
-
+        executeExperiment(nUsers,nDays,lStarDFA,eqOracle,ExperimentType.TESTDRIVER_RANDOMWMETHODEQ_LSTAR,false,"Custom");
     }
 }

@@ -9,6 +9,7 @@ import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.visualization.dot.DOT;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,6 +32,11 @@ public class VisualizeGraph {
         GraphDOT.write(automata,dotString);
 
         DOT.renderDOTExternal(dotString.toString(),"svg");
+
+    }
+
+    public static void visualizeFile(File image) throws IOException {
+        Desktop.getDesktop().open(image);
     }
 
     public static void visualizeDot(String path) throws IOException
@@ -56,7 +62,7 @@ public class VisualizeGraph {
         }
     }
 
-    private static CompactDFA<DomusRecord> filterGraph(CompactDFA<DomusRecord> automata)
+    public static CompactDFA<DomusRecord> filterGraph(CompactDFA<DomusRecord> automata)
     {
         CompactDFA<DomusRecord> ret = new CompactDFA<>(automata);
         for(Integer i : ret.getStates())
