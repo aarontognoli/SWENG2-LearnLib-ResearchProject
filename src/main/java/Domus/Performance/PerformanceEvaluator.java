@@ -1,10 +1,8 @@
 package Domus.Performance;
 
 import Domus.DatasetUtils.DomusRecord;
-import Domus.DomusOracle;
 import Domus.DomusWord;
 import net.automatalib.automata.fsa.DFA;
-import net.automatalib.words.Word;
 
 import java.util.ArrayList;
 import java.util.List;

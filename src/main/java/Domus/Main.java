@@ -2,7 +2,6 @@ package Domus;
 
 import Domus.DatasetUtils.DomusRecord;
 import net.automatalib.automata.fsa.DFA;
-import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 
 import java.io.IOException;
 

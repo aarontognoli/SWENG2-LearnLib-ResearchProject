@@ -2,7 +2,6 @@ package AstarBstar;
 
 import Domus.DomusAlphabet;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
-import net.automatalib.words.impl.GrowingMapAlphabet;
 
 import java.util.List;
 
