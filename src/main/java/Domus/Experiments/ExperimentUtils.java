@@ -183,7 +183,7 @@ public class ExperimentUtils {
         ExperimentUtils.log(experiment,result,DomusTestDriver.SIGMA);
         File image=null;
         try {
-            ExperimentUtils.printFiles(result, lStar, nUsers, nDays, type);
+            ExperimentUtils.printFiles(result, lStar, nUsers, nDays, type,comment);
             image = ExperimentUtils.printDotSVG(result,nUsers,nDays,type,comment,filter);
         }
         catch (Exception e)
