@@ -4,7 +4,22 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 //
-public record DomusRecord(LocalTime time, String sensorID, String sensorName, String sensorLocation, SensorState state) {
+public class DomusRecord {
+    private final LocalTime time;
+    private final String sensorID;
+    private final String sensorName;
+    private final String sensorLocation;
+    private final SensorState state;
+
+    public DomusRecord(LocalTime time, String sensorID, String sensorName, String sensorLocation, SensorState state) {
+        this.time = time;
+        this.sensorID = sensorID;
+        this.sensorName = sensorName;
+        this.sensorLocation = sensorLocation;
+        this.state = state;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -23,4 +38,25 @@ public record DomusRecord(LocalTime time, String sensorID, String sensorName, St
     public String toString() {
         return sensorName + "-" + sensorLocation + "-" + state;
     }
+
+    public LocalTime time() {
+        return time;
+    }
+
+    public String sensorID() {
+        return sensorID;
+    }
+
+    public String sensorName() {
+        return sensorName;
+    }
+
+    public String sensorLocation() {
+        return sensorLocation;
+    }
+
+    public SensorState state() {
+        return state;
+    }
+
 }
