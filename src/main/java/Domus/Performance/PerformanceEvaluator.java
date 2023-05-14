@@ -67,11 +67,11 @@ public class PerformanceEvaluator {
     }
 
     public void addToNegative(DomusWord sequence) {
-        positiveSequences.add(sequence);
+        negativeSequences.add(sequence);
     }
 
     public void addToNegative(List<DomusWord> sequences) {
-        positiveSequences.addAll(sequences);
+        negativeSequences.addAll(sequences);
     }
 
     public double getAccuracy() {
