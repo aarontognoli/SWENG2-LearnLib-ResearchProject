@@ -139,8 +139,17 @@ public class ExperimentUtils {
         }
     }
 
-    public static void performanceLog(Dataset testSet, DFA<?, DomusRecord> dfa, int nUsers) {
+    public static void performanceLog(Dataset testSet, DFA<?, DomusRecord> dfa, int nUsers, int nDays, String path) throws IOException {
         PerformanceEvaluator performanceEvaluator = new PerformanceEvaluator(dfa);
+        // test with missing days of users selected in training phase
+        for (int u = 0; u < nUsers; u++) {
+            for (int d = nDays; d < 5; d++) {
+                performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea()));
+                performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPreTea()));
+                performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPostTea()));
+            }
+        }
+        // test with other users
         for (int u = nUsers; u < 6; u++) {
             for (int d = 0; d < 5; d++) {
                 performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea()));
@@ -149,11 +158,19 @@ public class ExperimentUtils {
             }
         }
         performanceEvaluator.run();
-        System.out.println("\nPerformance:");
+        File file = new File("Results/Performance/performance_" + path + ".txt");
+        file.createNewFile();
+        PrintStream o = new PrintStream(file);
+        PrintStream console = System.out;
+        System.setOut(o);
+
         System.out.format("Accuracy: %f\n", performanceEvaluator.getAccuracy());
         System.out.format("Precision: %f\n", performanceEvaluator.getPrecision());
         System.out.format("Recall: %f\n", performanceEvaluator.getRecall());
         System.out.format("F1score: %f\n", performanceEvaluator.getF1score());
+
+        System.setOut(console);
+        System.out.println("Performance in file: performance_" + path + ".txt in Results/Performance");
     }
 
     public static void executeExperiment(int nUsers,
