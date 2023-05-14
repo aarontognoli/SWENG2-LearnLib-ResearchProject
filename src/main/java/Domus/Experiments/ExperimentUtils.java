@@ -1,9 +1,11 @@
 package Domus.Experiments;
 
 import AstarBstar.JsonSupportClass;
+import Domus.DatasetUtils.CustomDomusRecord;
 import Domus.DatasetUtils.CustomGson;
 import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
+import Domus.DatasetUtils.SensorState;
 import Domus.DomusTestDriver;
 import Domus.DomusWord;
 import Domus.Performance.PerformanceEvaluator;
@@ -25,6 +27,7 @@ import net.automatalib.words.Alphabet;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.util.List;
 
 enum ExperimentType {
     TESTDRIVER_SAMPLESETEQ_LSTAR,
@@ -144,7 +147,8 @@ public class ExperimentUtils {
         // test with missing days of users selected in training phase
         for (int u = 0; u < nUsers; u++) {
             for (int d = nDays; d < 5; d++) {
-                performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea()));
+                performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea().stream()
+                        .filter((x)->x.state()!= SensorState.Close).toList()));
                 performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPreTea()));
                 performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPostTea()));
             }
@@ -152,7 +156,8 @@ public class ExperimentUtils {
         // test with other users
         for (int u = nUsers; u < 6; u++) {
             for (int d = 0; d < 5; d++) {
-                performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea()));
+                performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea().stream()
+                        .filter((x)->x.state()!= SensorState.Close).toList()));
                 performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPreTea()));
                 performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPostTea()));
             }
