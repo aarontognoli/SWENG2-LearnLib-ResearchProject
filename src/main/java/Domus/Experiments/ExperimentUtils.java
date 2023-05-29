@@ -4,6 +4,7 @@ import AstarBstar.JsonSupportClass;
 import Domus.DatasetUtils.CustomGson;
 import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
+import Domus.DatasetUtils.SensorState;
 import Domus.DomusTestDriver;
 import Domus.DomusWord;
 import Domus.Performance.PerformanceEvaluator;
@@ -36,7 +37,11 @@ enum ExperimentType {
     TESTDRIVER_RANDOMWORDS_LSTAR,
     TESTDRIVERFULL_SAMPLESETEQ_LSTAR,
     TESTDRIVERFULL_WMETHODEQ_LSTAR,
-    TESTDRIVER_SAMPLESETEQ_RIVEST
+    TESTDRIVER_SAMPLESETEQ_RIVEST,
+    FILTER_RANDOMWORDS_LSTAR,
+    FILTER_RANDOMWMETHOD_LSTAR,
+    FILTER_WMETHOD_LSTAR,
+    FILTER_SAMPLESETEQ_LSTAR
 }
 public class ExperimentUtils {
 
@@ -135,21 +140,40 @@ public class ExperimentUtils {
         }
     }
 
-    public static void performanceLog(Dataset testSet, DFA<?, DomusRecord> dfa, int nUsers) {
+    public static void performanceLog(Dataset testSet, DFA<?, DomusRecord> dfa, int nUsers, int nDays, String path) throws IOException {
         PerformanceEvaluator performanceEvaluator = new PerformanceEvaluator(dfa);
+        // test with missing days of users selected in training phase
+        for (int u = 0; u < nUsers; u++) {
+            for (int d = nDays; d < 5; d++) {
+                performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea().stream()
+                        .filter((x)->x.state()!= SensorState.Close).toList()));
+                performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPreTea()));
+                performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPostTea()));
+            }
+        }
+        // test with other users
         for (int u = nUsers; u < 6; u++) {
             for (int d = 0; d < 5; d++) {
-                performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea()));
+                performanceEvaluator.addToPositive(new DomusWord(testSet.getUsers().get(u).get(d).getDuringTea().stream()
+                        .filter((x)->x.state()!= SensorState.Close).toList()));
                 performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPreTea()));
                 performanceEvaluator.addToNegative(new DomusWord(testSet.getUsers().get(u).get(d).getPostTea()));
             }
         }
         performanceEvaluator.run();
-        System.out.println("\nPerformance:");
+        File file = new File("Results/Performance/performance_" + path.replace(".json", "") + ".txt");
+        file.createNewFile();
+        PrintStream o = new PrintStream(file);
+        PrintStream console = System.out;
+        System.setOut(o);
+
         System.out.format("Accuracy: %f\n", performanceEvaluator.getAccuracy());
         System.out.format("Precision: %f\n", performanceEvaluator.getPrecision());
         System.out.format("Recall: %f\n", performanceEvaluator.getRecall());
         System.out.format("F1score: %f\n", performanceEvaluator.getF1score());
+
+        System.setOut(console);
+        System.out.println("Performance in file: performance_" + path + ".txt in Results/Performance");
     }
 
     public static void executeExperiment(int nUsers,
@@ -179,7 +203,7 @@ public class ExperimentUtils {
         ExperimentUtils.log(experiment,result,DomusTestDriver.SIGMA);
         File image=null;
         try {
-            ExperimentUtils.printFiles(result, lStar, nUsers, nDays, type);
+            ExperimentUtils.printFiles(result, lStar, nUsers, nDays, type,comment);
             image = ExperimentUtils.printDotSVG(result,nUsers,nDays,type,comment,filter);
         }
         catch (Exception e)

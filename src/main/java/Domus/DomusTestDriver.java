@@ -36,6 +36,9 @@ public class DomusTestDriver implements SUL<DomusRecord, Boolean> {
         currentSteps = new ArrayList<>(Collections.nCopies(allValidTeaSequences.size(), 0));
     }
 
+    public DomusTestDriver() {
+    }
+
     @Override
     public void pre() {
         Collections.fill(currentSteps, 0);
