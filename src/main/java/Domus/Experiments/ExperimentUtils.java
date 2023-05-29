@@ -1,7 +1,6 @@
 package Domus.Experiments;
 
 import AstarBstar.JsonSupportClass;
-import Domus.DatasetUtils.CustomDomusRecord;
 import Domus.DatasetUtils.CustomGson;
 import Domus.DatasetUtils.DatasetClass.Dataset;
 import Domus.DatasetUtils.DomusRecord;
@@ -27,7 +26,6 @@ import net.automatalib.words.Alphabet;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.List;
 
 enum ExperimentType {
     TESTDRIVER_SAMPLESETEQ_LSTAR,
@@ -163,7 +161,7 @@ public class ExperimentUtils {
             }
         }
         performanceEvaluator.run();
-        File file = new File("Results/Performance/performance_" + path + ".txt");
+        File file = new File("Results/Performance/performance_" + path.replace(".json", "") + ".txt");
         file.createNewFile();
         PrintStream o = new PrintStream(file);
         PrintStream console = System.out;

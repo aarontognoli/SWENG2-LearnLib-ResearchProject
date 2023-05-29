@@ -10,7 +10,7 @@ import static Domus.Experiments.ExperimentUtils.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String path ="DomusDFA_FILTER_RANDOMWORDS_LSTAR_5u-2d_.json";
+        String path ="DomusDFA1u-1d.json";
         DFA<?, DomusRecord> dfa = DFAfromJSON(path);
 
         Scanner scanner = new Scanner(path).useDelimiter("\\D+");
