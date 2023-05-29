@@ -8,4 +8,4 @@ Progress:
 - [x] Parse the dataset files
 - [x] Create Oracles from dataset
 - [x] Merge and experiment with created Oracles
-- [ ] Test the created Oracles
+- [x] Test the created Oracles
