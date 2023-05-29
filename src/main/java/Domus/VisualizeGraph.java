@@ -52,7 +52,7 @@ public class VisualizeGraph {
             }.getType();
             // Convert JSON File to Java Object
             myObj = gson.fromJson(reader, myType);
-            CompactDFA<DomusRecord> dfa = myObj.getDFA();
+            CompactDFA<DomusRecord> dfa = myObj.getDFA(false);
 
             if (toFilter) {
                 visualizeGraph(filterGraph(dfa));

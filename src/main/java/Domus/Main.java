@@ -10,8 +10,8 @@ import static Domus.Experiments.ExperimentUtils.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String path ="DomusDFA1u-1d.json";
-        DFA<?, DomusRecord> dfa = DFAfromJSON(path);
+        String path ="DomusDFA_TESTDRIVERFULL_WMETHODEQ_LSTAR_2u-2d_Custom.json";
+        DFA<?, DomusRecord> dfa = DFAfromJSON(path, true);
 
         Scanner scanner = new Scanner(path).useDelimiter("\\D+");
         int u = scanner.nextInt();

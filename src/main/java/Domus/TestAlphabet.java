@@ -6,12 +6,12 @@ import java.util.List;
 
 // new class that overrides the getSymbolIndex method so that if in testing it finds a new symbol,
 // it simply adds it to the alphabet without throwing exceptions
-public class DomusAlphabet<I> extends GrowingMapAlphabet<I> {
-    public DomusAlphabet(List<I> alphabet) {
+public class TestAlphabet<I> extends GrowingMapAlphabet<I> {
+    public TestAlphabet(List<I> alphabet) {
         super(alphabet);
     }
 
-    public DomusAlphabet() {
+    public TestAlphabet() {
     }
 
     @Override

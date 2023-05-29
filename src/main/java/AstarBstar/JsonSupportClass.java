@@ -1,7 +1,8 @@
 package AstarBstar;
 
-import Domus.DomusAlphabet;
+import Domus.TestAlphabet;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
+import net.automatalib.words.impl.GrowingMapAlphabet;
 
 import java.util.List;
 
@@ -26,9 +27,15 @@ public class JsonSupportClass<T> {
         this.numStates = numStates;
     }
 
-    public CompactDFA<T> getDFA()
+    public CompactDFA<T> getDFA(boolean testing)
     {
-        CompactDFA<T> ret = new CompactDFA<>(new DomusAlphabet<>(alphabet),stateCapacity,resizeFactor);
+        CompactDFA<T> ret;
+        if (testing) {
+            ret = new CompactDFA<>(new TestAlphabet<>(alphabet), stateCapacity, resizeFactor);
+        }
+        else {
+            ret = new CompactDFA<>(new GrowingMapAlphabet<>(alphabet), stateCapacity, resizeFactor);
+        }
         int k;
         for (int i=0;i<acceptance.size();i++)
         {

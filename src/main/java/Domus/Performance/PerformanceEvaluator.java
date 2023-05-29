@@ -37,7 +37,13 @@ public class PerformanceEvaluator {
         int falsePos = 0;
         int falseNeg = 0;
         for (DomusWord seq : positiveSequences) {
-            if (dfa.accepts(seq)) {
+            boolean accepted = false;
+            try {
+                accepted = dfa.accepts(seq);
+            } catch (ArrayIndexOutOfBoundsException e) {
+
+            }
+            if (accepted) {
                 truePos++;
             } else {
                 falseNeg++;
@@ -45,7 +51,13 @@ public class PerformanceEvaluator {
         }
 
         for (DomusWord seq : negativeSequences) {
-            if (!dfa.accepts(seq)) {
+            boolean accepted = false;
+            try {
+                accepted = dfa.accepts(seq);
+            } catch (ArrayIndexOutOfBoundsException e) {
+
+            }
+            if (!accepted) {
                 trueNeg++;
             } else {
                 falsePos++;
