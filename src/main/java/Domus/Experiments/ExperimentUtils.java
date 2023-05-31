@@ -128,7 +128,7 @@ public class ExperimentUtils {
         return eqOracle;
     }
 
-    public static DFA<?, DomusRecord> DFAfromJSON(String path) throws IOException {
+    public static DFA<?, DomusRecord> DFAfromJSON(String path, boolean testing) throws IOException {
         Gson gson = CustomGson.getCustomGson();
         JsonSupportClass<DomusRecord> myObj;
         try (Reader reader = new FileReader(path)) {
@@ -136,7 +136,7 @@ public class ExperimentUtils {
             }.getType();
             // Convert JSON File to Java Object
             myObj = gson.fromJson(reader, myType);
-            return myObj.getDFA();
+            return myObj.getDFA(testing);
         }
     }
 

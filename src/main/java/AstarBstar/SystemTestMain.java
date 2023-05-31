@@ -2,14 +2,9 @@ package AstarBstar;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import net.automatalib.automata.fsa.DFA;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.serialization.dot.GraphDOT;
-import net.automatalib.util.automata.builders.AutomatonBuilders;
-import net.automatalib.util.automata.builders.DFABuilder;
 import net.automatalib.visualization.Visualization;
-import net.automatalib.words.impl.GrowingMapAlphabet;
-import org.checkerframework.checker.units.qual.C;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,7 +24,7 @@ public class SystemTestMain {
             Type myType = new TypeToken<JsonSupportClass<Character>>() {}.getType();
             // Convert JSON File to Java Object
             myObj = gson.fromJson(reader, myType);
-            CompactDFA<Character> dfa = myObj.getDFA();
+            CompactDFA<Character> dfa = myObj.getDFA(false);
 
             GraphDOT.write(dfa, dfa.getInputAlphabet(), System.out);
             Visualization.visualize(dfa, dfa.getInputAlphabet());
